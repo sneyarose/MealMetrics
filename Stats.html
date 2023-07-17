@@ -1,0 +1,99 @@
+<head>
+    <title>Statistics</title>
+    <link rel="stylesheet" href="Navbar.css">
+    <style>
+        .curve_chart{
+            background-color: #f1e3d7;
+        }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+    
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Day', 'Orders'],
+          ['Monday',  72],
+          ['Tuesday',  64],
+          ['Wednesday', 82],
+          ['Thursday', 88],
+          ['Friday', 105],
+          ['Saturday', 132],
+          ['Sunday', 121]]
+        );
+    
+        var options = {
+          title: 'Number of Orders of Biriyani',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+          backgroundColor: '#f1e3d7'  // Set the background color here
+        };
+    
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart1'));
+    
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+    
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Day', 'Price'],
+          ['Monday',  130],
+          ['Tuesday', 130],
+          ['Wednesday', 135],
+          ['Thursday', 130],
+          ['Friday', 140],
+          ['Saturday', 145],
+          ['Sunday', 140]]
+        );
+    
+        var options = {
+          title: 'Price of Biriyani',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+          backgroundColor: '#f1e3d7',
+          colors: ['#fd7048']
+        };
+    
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart2'));
+    
+        chart.draw(data, options);
+      }
+    </script>
+    
+    <style>
+        #stats {
+            
+            background-color: #fd7048;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <ul>
+          <li><a id="home" href="#home">Home</a></li>
+          <li><a id="upload" href="Upload.html">Upload</a></li>
+          <li><a id="stats" href="Stats.html">Statistics</a></li>
+        </ul>
+        <a id="logout" href="Login.html">Log out</a>
+    </div>
+    <br><br>
+    <form>
+        <table>
+            <tr>
+                <td>Enter Food ID</td>
+                <td><input type="text"></td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <div style="display: flex;">
+      <div id="curve_chart1" style="width: 900px; height: 500px"></div>
+      <div id="curve_chart2" style="width: 900px; height: 500px"></div>
+    </div>
+    </body>

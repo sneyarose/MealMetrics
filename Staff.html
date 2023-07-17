@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Staff</title>
+  <style>
+    html {
+      margin: 0;
+      background-color: #f1e3d7;
+      font-family: sans-serif;
+    }
+
+    table {
+      width: 80%;
+      align-items: center;
+      text-align: center;
+      width: center;
+      margin: auto;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      color: #333;
+      margin-left: 30%;
+      margin-right: 30%;
+    }
+    #home {
+      background-color: #fd7048;
+    }
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center" style="color:#fd7048;">Current Prices</h1>
+    <div id="tableContainer" class="table-responsive">
+      <table id="foodTable" class="table">
+        <thead>
+          <tr>
+            <th>Sno</th>
+            <th>Name of Food</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows will be dynamically added using JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+var foodData = [
+          { sno: 1, name: "Biryani", price: 150 },
+          { sno: 2, name: "Shawarma", price: 120 },
+          { sno: 3, name: "Appam", price: 30 },
+          { sno: 4, name: "Dosa", price: 70 },
+          { sno: 5, name: "Paratha", price: 40 },
+          { sno: 6, name: "Samosa", price: 20 },
+          { sno: 7, name: "Chicken Curry", price: 140 },
+          { sno: 8, name: "Paneer Tikka", price: 180 },
+          { sno: 9, name: "Mutton Biryani", price: 250 },
+          { sno: 10, name: "Rasam", price: 70 },
+          { sno: 11, name: "Palak Paneer", price: 160 },
+          { sno: 12, name: "Fried Rice", price: 130 },
+          { sno: 13, name: "Gulab Jamun", price: 80 },
+          { sno: 14, name: "Chicken 65", price: 160 },
+          { sno: 15, name: "Butter Chicken", price: 200 },
+          { sno: 16, name: "Veg Meals", price: 110 },
+          { sno: 17, name: "Chappathi", price: 50 },
+          { sno: 18, name: "Aloo Gobi", price: 140 },
+          { sno: 19, name: "Kadai Chicken", price: 200 },
+          { sno: 20, name: "Fish Curry", price: 140 }
+        ];    
+
+    var tableBody = document.querySelector("#foodTable tbody");
+    for (var i = 0; i < foodData.length; i++) {
+      var row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${foodData[i].sno}</td>
+        <td>${foodData[i].name}</td>
+        <td>${foodData[i].price}</td>
+      `;
+      tableBody.appendChild(row);
+    }
+  </script>
+</body>
+
+</html>

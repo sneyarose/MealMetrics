@@ -1,0 +1,143 @@
+<html>
+<head>
+  <title>Upload</title>
+  <link rel="stylesheet" href="Navbar.css">
+  <style>
+    
+    #upload {
+      background-color: #fd7048;
+    }
+
+    table {
+      width: 80%;
+      align-items: center;
+    }
+
+    #csvdisp {
+      text-align: center;
+      width: center;
+      margin: auto;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+    .csvFileInput {
+      width: 40%;
+      font-weight: bold;
+      color: #fd7048;
+      padding: 25px;
+      border-radius: 3px;
+    }
+
+    .csvFileInput::file-selector-button {
+      margin-right: 20px;
+      border: none;
+      background: #f2f2f2;
+      padding: 10px 20px;
+      border-radius: 10px;
+      color: #333;
+      font-size: 17px;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+    }
+
+    .sub-but {
+      margin-left: 25px;
+      margin-right: 20px;
+      border: none;
+      background: #f2f2f2;
+      padding: 10px 20px;
+      border-radius: 10px;
+      color: #333;
+      font-size: 17px;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+    }
+
+    .texts {
+      margin-left: 2400px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="navbar">
+    <ul>
+          <li><a id="home" href="Home.html">Home</a></li>
+          <li><a id="upload" href="Upload.html">Upload</a></li>
+          <li><a id="stats" href="Stats.html">Statistics</a></li>
+    </ul>
+
+    <a id="logout" href="Login.html">Log out</a>
+  </div>
+  <br />
+  <br />
+  <form>
+    <table>
+      <tr>
+        <td class="texts">Enter date</td>
+        <td><input type="date" /></td>
+      </tr>
+    </table>
+  </form>
+  <input type="file" class="csvFileInput" accept=".csv" />
+  <br />
+  <br />
+  <div id="tableContainer"></div>
+
+  <script>
+    function convertCsvToTable(csvData) {
+      var rows = csvData.split("\n");
+      var tableHtml = '<table id="csvdisp">';
+
+      // Create table header
+      tableHtml += "<thead><tr>";
+      var headers = rows[0].split(",");
+      headers.forEach(function (header) {
+        tableHtml += "<th>" + header + "</th>";
+      });
+      tableHtml += "</tr></thead>";
+
+      // Create table body
+      tableHtml += "<tbody>";
+      for (var i = 1; i < rows.length; i++) {
+        var cells = rows[i].split(",");
+        tableHtml += "<tr>";
+        cells.forEach(function (cell) {
+          tableHtml += "<td>" + cell + "</td>";
+        });
+        tableHtml += "</tr>";
+      }
+      tableHtml += "</tbody></table>";
+
+      return tableHtml;
+    }
+
+    document
+      .querySelector(".csvFileInput")
+      .addEventListener("change", function (e) {
+        e.preventDefault(); // Prevent default form submission behavior
+        var file = e.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var csvData = e.target.result;
+          var tableHtml = convertCsvToTable(csvData);
+          document.getElementById("tableContainer").innerHTML = tableHtml;
+        };
+
+        reader.readAsText(file);
+      });
+  </script>
+  <br><br>
+  <input class="sub-but" type="submit"/>
+</body>
+</html>

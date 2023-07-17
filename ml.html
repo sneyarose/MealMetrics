@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CSV to JSON</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.10.1"></script>
+    <script>
+      function handleFileSelect(event) {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const contents = e.target.result;
+          const jsonData = convertCSVtoJSON(contents);
+
+          displayData(jsonData);
+        };
+
+        reader.readAsText(file);
+      }
+
+      function convertCSVtoJSON(csvData) {
+        const lines = csvData.split("\n");
+        const headers = lines[0].split(",");
+        const jsonData = [];
+
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].split(",");
+          const dataObject = {};
+
+          for (let j = 0; j < headers.length; j++) {
+            dataObject[headers[j]] = line[j];
+          }
+
+          jsonData.push(dataObject);
+        }
+
+        return jsonData;
+      }
+
+      function displayData(jsonData) {
+        const dataContainer = document.getElementById("data-container");
+        dataContainer.innerHTML = `<pre>${JSON.stringify(
+          jsonData,
+          null,
+          2
+        )}</pre>`;
+      }
+    </script>
+  </head>
+  
+  <body>
+    <h1>CSV to JSON Converter</h1>
+    <input type="file" accept=".csv" onchange="handleFileSelect(event)" />
+    <div id="data-container"></div>
+  </body>
+</html>
