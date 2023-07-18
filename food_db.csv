@@ -1,4 +1,3 @@
-Sno,Food Name,Price,Orders,Date
 1,Biryani,150,21,2023-05-01
 2,Shawarma,120,27,2023-05-01
 3,Appam,30,16,2023-05-01
@@ -559,4 +558,3 @@ Sno,Food Name,Price,Orders,Date
 18,Aloo Gobi,140,47,2023-05-28
 19,Kadai Chicken,200,41,2023-05-28
 20,Fish Curry,140,59,2023-05-28
-99,sample,2,10,1010-10-10
