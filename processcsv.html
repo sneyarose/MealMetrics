@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Processing</title>
+  <script>
+    function processCSV(csv) {
+      const rows = csv.split('\n');
+      const data = [];
+
+      for (let i = 0; i < rows.length; i++) {
+        const columns = rows[i].split(',');
+        const serialNumber = parseInt(columns[0]);
+        const orders = parseInt(columns[3]);
+        const date = new Date(columns[4]);
+        const dayOfWeek = date.getDay() === 0 ? 7 : date.getDay();
+        const item = [serialNumber, orders, dayOfWeek];
+        data.push(item);
+      }
+
+      return data;
+    }
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const csv = e.target.result;
+        const processedData = processCSV(csv);
+        const formattedData = processedData.map(item => item.join(', ')).join('<br>');
+        document.getElementById('display_data').innerHTML = formattedData;
+        // Do further processing with the data
+      };
+
+      reader.readAsText(file);
+    }
+  </script>
+</head>
+<body>
+  <input type="file" accept=".csv" onchange="handleFileSelect(event)" />
+  <div id="display_data"></div>
+</body>
+</html>

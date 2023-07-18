@@ -1,21 +1,20 @@
-Sno, Name of Food, Price
-1,Biryani,150
-2,Shawarma,120
-3,Appam,30
-4,Dosa,70
-5,Paratha,40
-6,Samosa,20
-7,Chicken Curry,140
-8,Paneer Tikka,180
-9,Mutton Biryani,250
-10,Rasam,70
-11,Palak Paneer,160
-12,Fried Rice,130
-13,Gulab Jamun,80
-14,Chicken 65,160
-15,Butter Chicken,200
-16,Veg Meals,110
-17,Chappathi,50
-18,Aloo Gobi,140
-19,Kadai Chicken,200
-20,Fish Curry,140
+1,Biryani,150,35,2023-05-08
+2,Shawarma,120,32,2023-05-09
+3,Appam,30,29,2023-05-09
+4,Dosa,70,29,2023-05-09
+5,Paratha,40,29,2023-05-09
+6,Samosa,20,24,2023-05-10
+7,Chicken Curry,140,31,2023-05-11
+8,Paneer Tikka,180,24,2023-05-12
+9,Mutton Biryani,250,21,2023-05-13
+10,Rasam,70,27,2023-05-14
+11,Palak Paneer,160,51,2023-05-15
+12,Fried Rice,130,64,2023-05-08
+13,Gulab Jamun,80,59,2023-05-08
+14,Chicken 65,160,47,2023-05-08
+15,Butter Chicken,200,61,2023-05-08
+16,Veg Meals,110,43,2023-05-08
+17,Chapati,50,55,2023-05-08
+18,Aloo Gobi,140,54,2023-05-08
+19,Kadai Chicken,200,50,2023-05-08
+20,Fish Curry,140,50,2023-05-08
