@@ -1,4 +1,5 @@
 import numpy as np
+import datetime
 
 # Define the food items with their serial numbers, names, and current prices
 food_items = [
@@ -26,29 +27,32 @@ food_items = [
 
 # Define the average number of orders for each food item for each day of the week
 average_orders = [
-    [30, 35, 20, 25, 40, 35, 30, 25, 35, 40, 50, 60, 45, 40, 60, 35, 45, 50, 45, 50],  # Monday
-    [25, 30, 15, 20, 35, 30, 25, 30, 35, 40, 55, 65, 50, 45, 65, 40, 50, 55, 50, 55],  # Tuesday
-    [35, 40, 25, 30, 45, 40, 35, 40, 45, 50, 40, 50, 35, 30, 50, 25, 35, 40, 35, 40],  # Wednesday
-    [40, 45, 30, 35, 50, 45, 40, 45, 50, 55, 45, 55, 40, 35, 55, 30, 40, 45, 40, 45],  # Thursday
-    [50, 55, 40, 45, 60, 55, 50, 55, 60, 65, 55, 65, 50, 45, 65, 40, 50, 55, 50, 55],  # Friday
-    [60, 65, 50, 55, 70, 65, 60, 65, 70, 75, 65, 75, 60, 55, 75, 50, 60, 65, 60, 65],  # Saturday
-    [45, 50, 35, 40, 55, 50, 45, 50, 55, 60, 50, 60, 45, 40, 60, 35, 45, 50, 45, 50]   # Sunday
+    [70, 62, 200, 210, 300, 100, 80, 50, 55, 80, 50, 57, 40, 75, 76, 90, 315, 48, 74, 70],  # Monday
+    [75, 63, 204, 212, 302, 102, 82, 51, 54, 81, 50, 57, 42, 76, 77, 92, 316, 49, 75, 72],  # Tuesday
+    [78, 64, 205, 213, 303, 102, 83, 52, 54, 82, 51, 58, 42, 79, 77, 93, 316, 49, 78, 73],  # Wednesday
+    [72, 63, 206, 213, 303, 103, 85, 51, 53, 81, 52, 57, 43, 79, 78, 93, 317, 50, 79, 73],  # Thursday
+    [80, 65, 200, 208, 315, 104, 89, 51, 54, 79, 48, 59, 45, 85, 89, 90, 320, 42, 83, 71],  # Friday
+    [110, 67, 188, 205, 340, 96, 94, 45, 49, 74, 42, 58, 47, 90, 96, 80, 340, 32, 90, 70],  # Saturday
+    [125, 68, 182, 200, 350, 86, 98, 36, 49, 60, 38, 58, 49, 100, 109, 68, 350, 28, 100, 72],  # Sunday
 ]
 
 # Define the standard deviation for each food item for each day of the week
 std_deviation = [
-    [5, 6, 4, 5, 8, 6, 5, 4, 6, 7, 9, 10, 8, 7, 10, 6, 7, 8, 7, 8],   # Monday
-    [4, 5, 3, 4, 7, 5, 4, 5, 7, 8, 10, 11, 9, 8, 11, 7, 8, 9, 8, 9],   # Tuesday
-    [6, 7, 5, 6, 9, 7, 6, 7, 9, 10, 8, 9, 7, 6, 9, 5, 6, 7, 6, 7],   # Wednesday
-    [4, 5, 4, 5, 8, 6, 5, 6, 8, 9, 10, 11, 9, 8, 11, 7, 8, 9, 8, 9],   # Thursday
+    [5, 6, 4, 5, 8, 6, 5, 4, 6, 7, 9, 10, 8, 7, 10, 6, 7, 8, 7, 8],  # Monday
+    [4, 5, 3, 4, 7, 5, 4, 5, 7, 8, 10, 11, 9, 8, 11, 7, 8, 9, 8, 9],  # Tuesday
+    [6, 7, 5, 6, 9, 7, 6, 7, 9, 10, 8, 9, 7, 6, 9, 5, 6, 7, 6, 7],  # Wednesday
+    [4, 5, 4, 5, 8, 6, 5, 6, 8, 9, 10, 11, 9, 8, 11, 7, 8, 9, 8, 9],  # Thursday
     [7, 8, 6, 7, 10, 8, 7, 8, 10, 11, 12, 14, 10, 9, 14, 8, 9, 10, 9, 10],  # Friday
-    [9, 10, 8, 9, 12, 10, 9, 10, 12, 13, 11, 13, 11, 10, 13, 9, 10, 11, 10, 11], # Saturday
-    [8, 9, 7, 8, 11, 9, 8, 9, 11, 12, 10, 11, 9, 8, 11, 7, 8, 9, 8, 9]   # Sunday
+    [9, 10, 8, 9, 12, 10, 9, 10, 12, 13, 11, 13, 11, 10, 13, 9, 10, 11, 10, 11],  # Saturday
+    [8, 9, 7, 8, 11, 9, 8, 9, 11, 12, 10, 11, 9, 8, 11, 7, 8, 9, 8, 9]  # Sunday
 ]
 
 # Convert average_orders and std_deviation to NumPy arrays
 average_orders = np.array(average_orders)
 std_deviation = np.array(std_deviation)
+
+# Define the start date
+start_date = datetime.date(2023, 5, 8)
 
 # Simulate the number of orders for each food item for each day of the week
 simulated_orders = np.random.normal(average_orders, std_deviation)
@@ -61,8 +65,9 @@ simulated_orders = np.round(simulated_orders).astype(int)
 
 # Print the simulated orders for each food item for each day of the week
 for day in range(len(average_orders)):
-    print(f"Day {day+1}:")
+    date = start_date + datetime.timedelta(days=day)
+
     for i in range(len(food_items)):
         item = food_items[i]
-        print(f"{item['sno']}: {item['name']} - {item['price']} | Orders: {simulated_orders[day][i]}")
+        print(f"{item['sno']},{item['name']},{item['price']},{simulated_orders[day][i]},{date}")
     print()

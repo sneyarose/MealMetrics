@@ -1,154 +1,106 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Multiple Linear Regression</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-  </head>
+<head>
+  <title>ML Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <script>
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
 
-  <body>
-    <h1>Multiple Linear Regression</h1>
-    <script>
-  // Define the training data, where the first number is sno, the second number is food id, the third is number of orders of that food, and the fourth is the day of the week
-  const trainingData = [
-  [1, 1, 30, 1],
-  [2, 2, 55, 1],
-  [3, 3, 45, 1],
-  [4, 4, 15, 1],
-  [5, 5, 80, 1],
-  [6, 1, 35, 1],
-  [7, 2, 60, 1],
-  [8, 3, 50, 1],
-  [9, 4, 20, 1],
-  [10, 5, 90, 1],
-  [11, 1, 40, 2],
-  [12, 2, 65, 2],
-  [13, 3, 55, 2],
-  [14, 4, 25, 2],
-  [15, 5, 100, 2],
-  [16, 1, 45, 3],
-  [17, 2, 70, 3],
-  [18, 3, 60, 3],
-  [19, 4, 30, 3],
-  [20, 5, 110, 3],
-  [21, 1, 50, 4],
-  [22, 2, 75, 4],
-  [23, 3, 65, 4],
-  [24, 4, 35, 4],
-  [25, 5, 90, 4],
-  [26, 1, 80, 5],
-  [27, 2, 80, 5],
-  [28, 3, 80, 5],
-  [29, 4, 80, 5],
-  [30, 5, 80, 5],
-  [31, 1, 100, 6],
-  [32, 2, 100, 6],
-  [33, 3, 100, 6],
-  [34, 4, 100, 6],
-  [35, 5, 100, 6],
-  [36, 1, 120, 7],
-  [37, 2, 120, 7],
-  [38, 3, 120, 7],
-  [39, 4, 120, 7],
-  [40, 5, 120, 7],
-  [41, 1, 30, 1],
-  [42, 2, 55, 1],
-  [43, 3, 45, 1],
-  [44, 4, 15, 1],
-  [45, 5, 80, 1],
-  [46, 1, 35, 1],
-  [47, 2, 60, 1],
-  [48, 3, 50, 1],
-  [49, 4, 20, 1],
-  [50, 5, 90, 1],
-  [51, 1, 40, 2],
-  [52, 2, 65, 2],
-  [53, 3, 55, 2],
-  [54, 4, 25, 2],
-  [55, 5, 100, 2],
-  [56, 1, 45, 3],
-  [57, 2, 70, 3],
-  [58, 3, 60, 3],
-  [59, 4, 30, 3],
-  [60, 5, 110, 3],
-  [61, 1, 50, 4],
-  [62, 2, 75, 4],
-  [63, 3, 65, 4],
-  [64, 4, 35, 4],
-  [65, 5, 90, 4],
-  [66, 1, 80, 5],
-  [67, 2, 80, 5],
-  [68, 3, 80, 5],
-  [69, 4, 80, 5],
-  [70, 5, 80, 5],
-  [71, 1, 100, 6],
-  [72, 2, 100, 6],
-  [73, 3, 100, 6],
-  [74, 4, 100, 6],
-  [75, 5, 100, 6],
-  [76, 1, 120, 7],
-  [77, 2, 120, 7],
-  [78, 3, 120, 7],
-  [79, 4, 120, 7],
-  [80, 5, 120, 7],
-];
+      reader.onload = async function (e) {
+        const csv = e.target.result;
+        const processedData = processCSV(csv);
+        const formattedData = processedData.map(item => item.join(', ')).join('<br>');
+        document.getElementById('display_data').innerHTML = formattedData;
 
+        // Preprocess the training data (normalization)
+        const normalizedTrainingData = processedData.map((data) => [
+          data[0] / 5, // Food ID (Normalized)
+          data[1] / 140, // Number of Orders (Normalized)
+          data[2] / 7 // Day of the Week (Normalized)
+        ]);
 
+        // Convert the training data to TensorFlow tensors
+        const trainingDataTensor = tf.tensor2d(normalizedTrainingData.map((data) => data.slice(0, 2))); // Use food ID and day of the week
+        const trainingLabelsTensor = tf.tensor2d(normalizedTrainingData.map((data) => [data[1]])); // Use only the number of orders as labels
 
+        // Create the model
+        const model = tf.sequential();
+        model.add(tf.layers.dense({ units: 1, inputShape: [2] }));
 
-      // Preprocess the training data (normalization)
-      const normalizedTrainingData = trainingData.map((data) => [
-        data[1] / 5, // Food ID (Normalized)
-        data[2] / 140, // Number of Orders (Normalized)
-      ]);
+        // Compile the model
+        model.compile({ loss: 'meanSquaredError', optimizer: 'sgd' });
 
-      // Convert the training data to TensorFlow tensors
-      const trainingDataTensor = tf.tensor2d(normalizedTrainingData.map((data) => data.slice(0, 1))); // Use only the food ID
-      const trainingLabelsTensor = tf.tensor2d(normalizedTrainingData.map((data) => [data[1]])); // Use only the number of orders as labels
+        // Train the model
+        async function trainModel() {
+          await model.fit(trainingDataTensor, trainingLabelsTensor, { epochs: 500 });
+        }
 
-      // Create the model
-      const model = tf.sequential();
-      model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+        await trainModel(); // Await the completion of model training
 
-      // Compile the model
-      model.compile({ loss: 'meanSquaredError', optimizer: 'sgd' });
+        // Predict the number of orders for the input values
+        function predictOrders() {
+          // Get the inputs from the user
+          const foodId = Number(document.getElementById('food-id-input').value) / 5; // Normalize the input
+          const dayOfWeek = Number(document.getElementById('day-of-week-input').value) / 7; // Normalize the input
 
-      // Train the model
-      async function trainModel() {
-        await model.fit(trainingDataTensor, trainingLabelsTensor, { epochs: 500 });
+          // Prepare the input tensor for prediction
+          const inputTensor = tf.tensor2d([[foodId, dayOfWeek]]);
+
+          // Make the prediction
+          const normalizedPrediction = model.predict(inputTensor).dataSync()[0];
+
+          // Denormalize the prediction using the scaling factor for the number of orders
+          const prediction = normalizedPrediction * 140; // Scaling factor for the number of orders
+
+          // Display the prediction
+          const outputContainer = document.getElementById('output-container');
+          outputContainer.innerHTML = '<h3>Prediction:</h3>';
+          outputContainer.innerHTML += '<p>Food ID: ' + foodId * 5 + '</p>';
+          outputContainer.innerHTML += '<p>Day of the Week: ' + dayOfWeek * 7 + '</p>';
+          outputContainer.innerHTML += '<p>Number of Orders: ' + prediction.toFixed(2) + '</p>';
+        }
+
+        // Assign the predictOrders function to the button onclick event
+        document.getElementById('predict-button').onclick = predictOrders;
+      };
+
+      reader.readAsText(file);
+    }
+
+    function processCSV(csv) {
+      const rows = csv.split('\n');
+      const data = [];
+
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i].trim(); // Trim whitespace from the row
+        if (row !== "") { // Skip empty rows
+          const columns = row.split(',');
+          const foodId = parseInt(columns[0]);
+          const orders = parseInt(columns[1]);
+          const dayOfWeek = parseInt(columns[2]);
+          const item = [foodId, orders, dayOfWeek];
+          data.push(item);
+        }
       }
 
-      // Predict the number of orders for the next day
-      function predictNextDayOrders() {
-        // Get the inputs from the user
-        const foodId = Number(document.getElementById('food-id-input').value) / 5; // Normalize the input
+      return data;
+    }
+  </script>
+</head>
 
-        // Prepare the input tensor for prediction
-        const inputTensor = tf.tensor2d([[foodId]]); // Use placeholder values for the number of orders
-
-        // Reshape the input tensor to match the model's input shape
-        const reshapedInputTensor = inputTensor.reshape([1, 1]);
-
-        // Make the prediction
-        const normalizedPrediction = model.predict(reshapedInputTensor).dataSync()[0];
-
-        // Denormalize the prediction
-        const prediction = normalizedPrediction * 140; // Scaling factor for the number of orders
-
-        // Display the prediction
-        const outputContainer = document.getElementById('output-container');
-        outputContainer.innerHTML = '<h3>Prediction for the Next Day:</h3>';
-        outputContainer.innerHTML += '<p>Food ID: ' + foodId * 5 + '</p>';
-        outputContainer.innerHTML += '<p>Prediction: Number of Orders for the Next Day: ' + prediction.toFixed(2) + '</p>';
-      }
-
-      // Call the trainModel function to train the model
-      trainModel();
-    </script>
-    <div>
-      <label for="food-id-input">Food ID:</label>
-      <input type="number" id="food-id-input" step="1" min="1" max="50">
-    </div>
-    <button onclick="predictNextDayOrders()">Predict</button>
-    <div id="output-container"></div>
-  </body>
+<body>
+  <h1>Multiple Linear Regression</h1>
+  <input type="file" accept=".csv" onchange="handleFileSelect(event)" />
+  <div id="display_data"></div>
+  <div>
+    <label for="food-id-input">Food ID:</label>
+    <input type="number" id="food-id-input" step="1" min="1" max="5">
+    <label for="day-of-week-input">Day of the Week:</label>
+    <input type="number" id="day-of-week-input" step="1" min="1" max="7">
+  </div>
+  <button id="predict-button">Predict</button>
+  <div id="output-container"></div>
+</body>
 </html>
