@@ -1,46 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Home</title>
-    <link rel="stylesheet" href="Navbar.css">
-    <style>
-    table {
-      width: 80%;
-      align-items: center;
-      text-align: center;
-      width: center;
-      margin: auto;
-    }
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-       
-    #home {
-      background-color: #fd7048;
-    }
-    h1{
-        color: #333;
-        margin-left:30%;
-        margin-right: 30%;
-    }
-    </style>
-</head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Website Title</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="nav_boot.css">
+  <style>
+    #foodTable {
+        width: 50%;
+        margin-right: 25%;
+        margin-left: 7%;
+        margin-bottom: 5%;
+        border-style: solid;
+        }
 
+        #foodTable th,
+        #foodTable td {
+        border: 1px solid antiquewhite;
+        padding: 8px;
+        text-align: center;
+        }
+
+        #foodTable th {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: antiquewhite;
+        }
+
+        #foodTable tr {
+        background-color: rgba(50, 50, 50, 0.356);
+        }
+
+        #foodTable tr:hover {
+        transition: 1s;
+        background-color: rgba(2, 76, 1, 0.751);
+        }
+
+        /* Custom table styles */
+        h1 {
+        margin-right: 50%;
+        margin-left: 22%;
+        text-align: left;
+        color: antiquewhite;
+        margin-bottom: 5%;
+        }
+  </style>
+</head>
 <body>
-    <div class="navbar">
-        <ul>
-          <li><a id="home" href="#home">Home</a></li>
-          <li><a id="upload" href="Upload.html">Upload</a></li>
-          <li><a id="stats" href="Stats.html">Statistics</a></li>
+    <nav class="navbar navbar-expand-lg navbar" id="navbar">
+        <ul class="nav navbar-nav">
+          <li><img src="logo_new-removebg-preview.png" id="nav_logo"></li>
+          <li><a href="Home.html" class="hoverable">Home</a></li>
+          <li><a href="Upload.html" class="hoverable">Upload</a></li>
+          <li><a href="Upload.html" class="hoverable">Statistics</a></li>
+          <li class="nav_right"><a href="Login.html" class="hoverable">Log out</a></li>
         </ul>
-    
-        <a id="logout" href="Login.html">Log out</a>
-    </div>
-    <h1>Current Prices</h1>
+      </nav>
+      
+
+  <h1>Current Prices</h1>
     <div id="tableContainer"></div>
     <table id="foodTable">
         <thead>
@@ -90,5 +107,37 @@
           tableBody.appendChild(row);
         }
       </script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function () {
+      var str = '#len';
+      $(document).ready(function () {
+        var i, stop;
+        i = 1;
+        stop = 4;
+        setInterval(function () {
+          if (i > stop) {
+            return;
+          }
+          $('#len' + (i++)).toggleClass('bounce');
+        }, 500);
+      });
+    });
+  </script>
+  <script>
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+  
+      // Check the current scroll position
+      if (window.scrollY > 0) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
   
 </body>
+</html>

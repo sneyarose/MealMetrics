@@ -1,143 +1,144 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Upload</title>
-  <link rel="stylesheet" href="Navbar.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Table Display</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="nav_boot.css">
   <style>
-    
-    #upload {
-      background-color: #fd7048;
+    #foodTable {
+      width: 50%;
+      margin-right: 25%;
+      margin-left: 7%;
+      margin-bottom: 5%;
+      border-style: solid;
     }
 
-    table {
-      width: 80%;
-      align-items: center;
-    }
-
-    #csvdisp {
-      text-align: center;
-      width: center;
-      margin: auto;
-    }
-
-    th,
-    td {
-      border: 1px solid #ddd;
+    #foodTable th,
+    #foodTable td {
+      border: 1px solid antiquewhite;
       padding: 8px;
-      text-align: left;
+      text-align: center;
     }
 
-    th {
-      background-color: #f2f2f2;
-    }
-    .csvFileInput {
-      width: 40%;
-      font-weight: bold;
-      color: #fd7048;
-      padding: 25px;
-      border-radius: 3px;
+    #foodTable th {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: antiquewhite;
     }
 
-    .csvFileInput::file-selector-button {
-      margin-right: 20px;
-      border: none;
-      background: #f2f2f2;
+    #foodTable tr {
+      background-color: rgba(50, 50, 50, 0.356);
+    }
+
+    #foodTable tr:hover {
+      transition: 1s;
+      background-color: rgba(2, 76, 1, 0.751);
+    }
+
+    #csvFileInput {
+      display: none; /* Hide the default file input */
+    }
+
+    /* Styling for the custom "Choose File" button container */
+    .file-input-container {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      margin-left: 25%;
+      margin-top: 50px;
+      margin-bottom: 5%;
+      background-color: #fd7048;
       padding: 10px 20px;
-      border-radius: 10px;
-      color: #333;
-      font-size: 17px;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background 0.2s ease-in-out;
+      transition: background-color 0.2s ease-in-out;
+      max-width: fit-content;
     }
 
-    .sub-but {
-      margin-left: 25px;
-      margin-right: 20px;
-      border: none;
-      background: #f2f2f2;
-      padding: 10px 20px;
-      border-radius: 10px;
-      color: #333;
-      font-size: 17px;
-      cursor: pointer;
-      transition: background 0.2s ease-in-out;
-    }
-
-    .texts {
-      margin-left: 2400px;
+    .file-input-container:hover {
+      background-color: #f55830;
     }
   </style>
 </head>
-
 <body>
-  <div class="navbar">
-    <ul>
-          <li><a id="home" href="Home.html">Home</a></li>
-          <li><a id="upload" href="Upload.html">Upload</a></li>
-          <li><a id="stats" href="Stats.html">Statistics</a></li>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar" id="navbar">
+        <ul class="nav navbar-nav">
+          <li><img src="logo_new-removebg-preview.png" id="nav_logo"></li>
+          <li><a href="Home.html" class="hoverable">Home</a></li>
+          <li><a href="Upload.html" class="hoverable">Upload</a></li>
+          <li><a href="Stats.html" class="hoverable">Statistics</a></li>
+          <li class="nav_right"><a href="Login.html" class="hoverable">Log out</a></li>
+        </ul>
+      </nav>
+      <!-- Custom "Choose File" button container -->
+      <label for="csvFileInput" class="file-input-container">Choose File</label>
+      <input type="file" id="csvFileInput">
 
-    <a id="logout" href="Login.html">Log out</a>
-  </div>
-  <br />
-  <br />
-  <form>
-    <table>
-      <tr>
-        <td class="texts">Enter date</td>
-        <td><input type="date" /></td>
-      </tr>
-    </table>
-  </form>
-  <input type="file" class="csvFileInput" accept=".csv" />
-  <br />
-  <br />
   <div id="tableContainer"></div>
 
   <script>
     function convertCsvToTable(csvData) {
       var rows = csvData.split("\n");
-      var tableHtml = '<table id="csvdisp">';
+      var tableHtml = "<table id='foodTable'>";
 
-      // Create table header
-      tableHtml += "<thead><tr>";
-      var headers = rows[0].split(",");
-      headers.forEach(function (header) {
-        tableHtml += "<th>" + header + "</th>";
-      });
-      tableHtml += "</tr></thead>";
-
-      // Create table body
-      tableHtml += "<tbody>";
-      for (var i = 1; i < rows.length; i++) {
+      for (var i = 0; i < rows.length; i++) {
         var cells = rows[i].split(",");
         tableHtml += "<tr>";
-        cells.forEach(function (cell) {
-          tableHtml += "<td>" + cell + "</td>";
-        });
+        for (var j = 0; j < cells.length; j++) {
+          tableHtml += "<td>" + cells[j] + "</td>";
+        }
         tableHtml += "</tr>";
       }
-      tableHtml += "</tbody></table>";
 
+      tableHtml += "</table>";
       return tableHtml;
     }
 
-    document
-      .querySelector(".csvFileInput")
-      .addEventListener("change", function (e) {
-        e.preventDefault(); // Prevent default form submission behavior
-        var file = e.target.files[0];
-        var reader = new FileReader();
+    document.getElementById("csvFileInput").addEventListener("change", function (e) {
+      var file = e.target.files[0];
+      var reader = new FileReader();
 
-        reader.onload = function (e) {
-          var csvData = e.target.result;
-          var tableHtml = convertCsvToTable(csvData);
-          document.getElementById("tableContainer").innerHTML = tableHtml;
-        };
+      reader.onload = function (e) {
+        var csvData = e.target.result;
+        var tableHtml = convertCsvToTable(csvData);
+        document.getElementById("tableContainer").innerHTML = tableHtml;
+      };
 
-        reader.readAsText(file);
-      });
+      reader.readAsText(file);
+    });
   </script>
-  <br><br>
-  <input class="sub-but" type="submit"/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function () {
+      var str = '#len';
+      $(document).ready(function () {
+        var i, stop;
+        i = 1;
+        stop = 4;
+        setInterval(function () {
+          if (i > stop) {
+            return;
+          }
+          $('#len' + (i++)).toggleClass('bounce');
+        }, 500);
+      });
+    });
+  </script>
+  <script>
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+  
+      // Check the current scroll position
+      if (window.scrollY > 0) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
 </body>
 </html>
