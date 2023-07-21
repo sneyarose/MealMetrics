@@ -1,0 +1,68 @@
+html,body{
+    margin: 15px;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: black;
+    background-image: url("admin_bg.png");
+    background-size: cover;
+    color: antiquewhite;
+    height: 100vh;
+}
+  
+  /* Style the output table */
+  table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 20px;
+  }
+  
+  table, th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  /* Style the Process CSV button */
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #fd7048;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5%;
+  }
+  
+  button:hover {
+    background-color: #f55830;
+  }
+  
+  /* Style the input fields */
+  input[type="file"], input[type="number"] {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
+  
+  label {
+    cursor: pointer;
+    background-color: #fd7048;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5%;
+  }
+  
+  label:hover {
+    background-color: #f55830;
+  }
+  

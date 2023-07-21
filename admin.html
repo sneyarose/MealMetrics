@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Processor</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="input_var">
+    <label for="csvInput">Choose CSV:</label>
+    <input type="file" id="csvInput" accept=".csv">
+    <br>
+    <label for="percentageInput">Percentage Threshold:</label>
+    <input type="number" id="percentageInput" value="10" step="1" min="1">
+    <button onclick="processCSV()">Process CSV</button>
+  </div>
+  <div id="output"></div>
+  <script>
+    const orderMeans = [
+      91.57, 64.0, 196.0, 212.43, 320.71, 95.71, 87.0, 46.71, 54.0, 75.0,
+      45.43, 57.71, 48.71, 88.71, 89.14, 105.86, 321.71, 43.57, 83.0, 71.43
+    ];
+
+    const food_prices = [
+      150, 120, 30, 70, 40, 20, 140, 180, 250, 70,
+      160, 130, 80, 160, 200, 110, 50, 140, 200, 140
+    ];
+
+    // Helper function to parse CSV data
+    function parseCSVData(csvData) {
+      const lines = csvData.split('\n');
+      return lines.map(line => line.split(','));
+    }
+
+    // Helper function to increase or decrease prices by a percentage and round to the nearest multiple of 5
+    function adjustPrices(inorder, orderMeans, food_prices, percentageThreshold) {
+      const new_prices = [];
+
+      for (let i = 0; i < inorder.length; i++) {
+        const diffPercentage = (inorder[i] - orderMeans[i]) / orderMeans[i] * 100;
+
+        if (diffPercentage >= percentageThreshold) {
+          new_prices.push(Math.round((food_prices[i] + food_prices[i] * (percentageThreshold / 100)) / 5) * 5);
+        } else if (diffPercentage <= -percentageThreshold) {
+          new_prices.push(Math.round((food_prices[i] - food_prices[i] * (percentageThreshold / 100)) / 5) * 5);
+        } else {
+          new_prices.push(food_prices[i]);
+        }
+      }
+
+      return new_prices;
+    }
+
+    // Main processing function
+    function processCSV() {
+      const fileInput = document.getElementById('csvInput');
+      const file = fileInput.files[0];
+      const percentageInput = document.getElementById('percentageInput');
+      const percentageThreshold = parseFloat(percentageInput.value);
+
+      if (!file) {
+        alert("Please select a CSV file.");
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const content = e.target.result;
+        const csvData = content.trim();
+        const csvRows = parseCSVData(csvData);
+
+        if (csvRows.length !== 20) {
+          alert("CSV file should have exactly 20 rows.");
+          return;
+        }
+
+        const inorderArray = csvRows.map(row => parseFloat(row[1])); // Extract the second column as an array
+
+        const new_prices = adjustPrices(
+          inorderArray,
+          orderMeans,
+          food_prices,
+          percentageThreshold
+        );
+
+        // Display the updated prices on the HTML page
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = "<h3>Updated Prices:</h3>";
+
+        for (let i = 0; i < new_prices.length; i++) {
+          const entryNumber = i + 1;
+          const updatedPrice = new_prices[i];
+          outputDiv.innerHTML += `<p>Entry ${entryNumber}: $${updatedPrice.toFixed(2)}</p>`;
+        }
+      };
+
+      reader.readAsText(file);
+    }
+  </script>
+</body>
+</html>
