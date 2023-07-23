@@ -1,145 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSV Table Display</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="nav_boot.css">
-  <style>
-    #foodTable {
-      width: 50%;
-      margin-right: 25%;
-      margin-left: 7%;
-      margin-bottom: 5%;
-      border-style: solid;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSV Table Display</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="nav_boot.css" />
+    <style>
+      #foodTable {
+        width: 50%;
+        margin-right: 25%;
+        margin-left: 7%;
+        margin-bottom: 5%;
+        border-style: solid;
+      }
 
-    #foodTable th,
-    #foodTable td {
-      border: 1px solid antiquewhite;
-      padding: 8px;
-      text-align: center;
-    }
+      #foodTable th,
+      #foodTable td {
+        border: 1px solid antiquewhite;
+        padding: 8px;
+        text-align: center;
+      }
 
-    #foodTable th {
-      background-color: rgba(0, 0, 0, 0.5);
-      color: antiquewhite;
-    }
+      #foodTable th {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: antiquewhite;
+      }
 
-    #foodTable tr {
-      background-color: rgba(50, 50, 50, 0.356);
-    }
+      #foodTable tr {
+        background-color: rgba(50, 50, 50, 0.356);
+      }
 
-    #foodTable tr:hover {
-      transition: 1s;
-      background-color: rgba(2, 76, 1, 0.751);
-    }
+      #foodTable tr:hover {
+        transition: 1s;
+        background-color: rgba(2, 76, 1, 0.751);
+      }
 
-    #csvFileInput {
-      display: none; /* Hide the default file input */
-    }
+      #csvFileInput {
+        display: none; /* Hide the default file input */
+      }
 
-    /* Styling for the custom "Choose File" button container */
-    .file-input-container {
-      display: flex;
-      justify-content: left;
-      align-items: center;
-      margin-left: 25%;
-      margin-top: 50px;
-      margin-bottom: 5%;
-      background-color: #fd7048;
-      padding: 10px 20px;
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-      max-width: fit-content;
-    }
+      /* Styling for the custom "Choose File" button container */
+      .file-input-container {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        margin-left: 25%;
+        margin-top: 50px;
+        margin-bottom: 5%;
+        background-color: #fd7048;
+        padding: 10px 20px;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+        max-width: fit-content;
+      }
 
-    .file-input-container:hover {
-      background-color: #f55830;
-    }
-  </style>
-</head>
-<body>
+      .file-input-container:hover {
+        background-color: #f55830;
+      }
+    </style>
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg navbar" id="navbar">
-        <ul class="nav navbar-nav">
-          <li><img src="logo_new-removebg-preview.png" id="nav_logo"></li>
-          <li><a href="Home.html" class="hoverable">Home</a></li>
-          <li><a href="Upload.html" class="hoverable">Upload</a></li>
-          <li><a href="Stats.html" class="hoverable">Statistics</a></li>
-          <li><a href="mlc.html" class="hoverable">ML Model</a></li>
-          <li class="nav_right"><a href="Login.html" class="hoverable">Log out</a></li>
-        </ul>
-      </nav>
-      <!-- Custom "Choose File" button container -->
-      <label for="csvFileInput" class="file-input-container">Choose File</label>
-      <input type="file" id="csvFileInput">
+      <ul class="nav navbar-nav">
+        <li><img src="logo_new-removebg-preview.png" id="nav_logo" /></li>
+        <li><a href="Home.html" class="hoverable">Home</a></li>
+        <li><a href="Upload.html" class="hoverable">Upload</a></li>
+        <li><a href="Stats.html" class="hoverable">Statistics</a></li>
+        <li><a href="mlc.html" class="hoverable">ML Model</a></li>
+        <li class="nav_right">
+          <a href="Login.html" class="hoverable">Log out</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- Custom "Choose File" button container -->
+    <label for="csvFileInput" class="file-input-container">Choose File</label>
+    <input type="file" id="csvFileInput" />
 
-  <div id="tableContainer"></div>
+    <div id="tableContainer"></div>
 
-  <script>
-    function convertCsvToTable(csvData) {
-      var rows = csvData.split("\n");
-      var tableHtml = "<table id='foodTable'>";
+    <script>
+      function convertCsvToTable(csvData) {
+        var rows = csvData.split("\n");
+        var tableHtml = "<table id='foodTable'>";
 
-      for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].split(",");
-        tableHtml += "<tr>";
-        for (var j = 0; j < cells.length; j++) {
-          tableHtml += "<td>" + cells[j] + "</td>";
-        }
-        tableHtml += "</tr>";
-      }
-
-      tableHtml += "</table>";
-      return tableHtml;
-    }
-
-    document.getElementById("csvFileInput").addEventListener("change", function (e) {
-      var file = e.target.files[0];
-      var reader = new FileReader();
-
-      reader.onload = function (e) {
-        var csvData = e.target.result;
-        var tableHtml = convertCsvToTable(csvData);
-        document.getElementById("tableContainer").innerHTML = tableHtml;
-      };
-
-      reader.readAsText(file);
-    });
-  </script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(function () {
-      var str = '#len';
-      $(document).ready(function () {
-        var i, stop;
-        i = 1;
-        stop = 4;
-        setInterval(function () {
-          if (i > stop) {
-            return;
+        for (var i = 0; i < rows.length; i++) {
+          var cells = rows[i].split(",");
+          tableHtml += "<tr>";
+          for (var j = 0; j < cells.length; j++) {
+            tableHtml += "<td>" + cells[j] + "</td>";
           }
-          $('#len' + (i++)).toggleClass('bounce');
-        }, 500);
-      });
-    });
-  </script>
-  <script>
-    window.addEventListener('scroll', function() {
-      const navbar = document.getElementById('navbar');
-  
-      // Check the current scroll position
-      if (window.scrollY > 0) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
+          tableHtml += "</tr>";
+        }
+
+        tableHtml += "</table>";
+        return tableHtml;
       }
-    });
-  </script>
-</body>
+
+      document
+        .getElementById("csvFileInput")
+        .addEventListener("change", function (e) {
+          var file = e.target.files[0];
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            var csvData = e.target.result;
+            var tableHtml = convertCsvToTable(csvData);
+            document.getElementById("tableContainer").innerHTML = tableHtml;
+          };
+
+          reader.readAsText(file);
+        });
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(function () {
+        var str = "#len";
+        $(document).ready(function () {
+          var i, stop;
+          i = 1;
+          stop = 4;
+          setInterval(function () {
+            if (i > stop) {
+              return;
+            }
+            $("#len" + i++).toggleClass("bounce");
+          }, 500);
+        });
+      });
+    </script>
+    <script>
+      window.addEventListener("scroll", function () {
+        const navbar = document.getElementById("navbar");
+
+        // Check the current scroll position
+        if (window.scrollY > 0) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+    </script>
+  </body>
 </html>
