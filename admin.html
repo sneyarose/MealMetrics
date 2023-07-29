@@ -32,19 +32,18 @@
       return lines.map(line => line.split(','));
     }
 
-    // Helper function to increase or decrease prices by a percentage and round to the nearest multiple of 5
-    function adjustPrices(inorder, orderMeans, food_prices, percentageThreshold) {
+    // Updated Helper function to adjust prices proportionally based on percentage difference
+    function adjustPrices(inorder, orderMeans, food_prices, fixedAdjustment) {
       const new_prices = [];
 
       for (let i = 0; i < inorder.length; i++) {
         const diffPercentage = (inorder[i] - orderMeans[i]) / orderMeans[i] * 100;
+        const priceAdjustment = Math.round(diffPercentage / fixedAdjustment) * 5;
 
-        if (diffPercentage >= percentageThreshold) {
-          new_prices.push(Math.round((food_prices[i] + food_prices[i] * (percentageThreshold / 100)) / 5) * 5);
-        } else if (diffPercentage <= -percentageThreshold) {
-          new_prices.push(Math.round((food_prices[i] - food_prices[i] * (percentageThreshold / 100)) / 5) * 5);
+        if (priceAdjustment >= 0) {
+          new_prices.push(food_prices[i] + priceAdjustment);
         } else {
-          new_prices.push(food_prices[i]);
+          new_prices.push(food_prices[i] - Math.abs(priceAdjustment));
         }
       }
 
@@ -56,7 +55,7 @@
       const fileInput = document.getElementById('csvInput');
       const file = fileInput.files[0];
       const percentageInput = document.getElementById('percentageInput');
-      const percentageThreshold = parseFloat(percentageInput.value);
+      const fixedAdjustment = parseFloat(percentageInput.value);
 
       if (!file) {
         alert("Please select a CSV file.");
@@ -81,7 +80,7 @@
           inorderArray,
           orderMeans,
           food_prices,
-          percentageThreshold
+          fixedAdjustment
         );
 
         // Display the updated prices on the HTML page

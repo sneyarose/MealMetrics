@@ -15,22 +15,24 @@
       #stats {
         background-color: #fd7048;
       }
-
-      /* Added custom styling for the container that holds the charts */
+      .chart text {
+    fill: white; /* Set the text color to white */
+  }
       .chart-container {
         display: grid;
         flex-wrap: wrap;
         justify-content: center;
       }
-
-      /* Custom styling for each chart */
+      .google-visualization-axis-text {
+    fill: white; /* Set the text color to white */
+  }
       .chart {
         display: flex;
-        width: 400px;
-        height: 300px;
+        width: 700px;
+        height: 500px;
         margin: 10px;
+        background-color: rgba(107, 255, 73, 0.062);
       }
-
       #food_enter {
         display: flex;
         justify-content: center;
@@ -75,42 +77,30 @@
           title: "Number of Orders of Biriyani",
           curveType: "function",
           legend: { position: "bottom" },
-          backgroundColor: "#0f0f0f00", // Set the background color here
+          backgroundColor: { fill: 'transparent' },
+          titleTextStyle: {
+            color: 'white',
+          },
+          colors: ['orange'],
+          hAxis: {
+        textStyle: {
+          color: 'white', // Set the horizontal axis label text color to white
+        }
+      },
+      vAxis: {
+        textStyle: {
+          color: 'white', // Set the vertical axis label text color to white
+        },
+        titleTextStyle: {
+          color: 'white', // Set the vertical axis title text color to white
+        }
+      },
+
+          is3D: true
         };
 
         var chart = new google.visualization.LineChart(
           document.getElementById("curve_chart1")
-        );
-
-        chart.draw(data, options);
-      }
-    </script>
-    <script type="text/javascript">
-      google.charts.load("current", { packages: ["corechart"] });
-      google.charts.setOnLoadCallback(drawChart2);
-
-      function drawChart2() {
-        var data = google.visualization.arrayToDataTable([
-          ["Day", "Price"],
-          ["Monday", 130],
-          ["Tuesday", 130],
-          ["Wednesday", 135],
-          ["Thursday", 130],
-          ["Friday", 140],
-          ["Saturday", 145],
-          ["Sunday", 140],
-        ]);
-
-        var options = {
-          title: "Price of Biriyani",
-          curveType: "function",
-          legend: { position: "bottom" },
-          backgroundColor: "#0f0f0f00",
-          colors: ["#fd7048"],
-        };
-
-        var chart = new google.visualization.LineChart(
-          document.getElementById("curve_chart2")
         );
 
         chart.draw(data, options);
@@ -128,7 +118,6 @@
     <br />
     <div class="chart-container">
       <div class="chart" id="curve_chart1"></div>
-      <div class="chart" id="curve_chart2"></div>
     </div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -153,7 +142,6 @@
       window.addEventListener("scroll", function () {
         const navbar = document.getElementById("navbar");
 
-        // Check the current scroll position
         if (window.scrollY > 0) {
           navbar.classList.add("scrolled");
         } else {

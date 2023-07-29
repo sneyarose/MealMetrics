@@ -2,10 +2,18 @@
 <html>
 <head>
   <title>CSV Processor</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
-  <input type="file" id="csvInput" accept=".csv">
-  <button onclick="processCSV()">Process CSV</button>
+  <div class="input_var">
+    <label for="csvInput">Choose CSV:</label>
+    <input type="file" id="csvInput" accept=".csv">
+    <br>
+    <label for="percentageInput">Percentage Threshold:</label>
+    <input type="number" id="percentageInput" value="10" step="1" min="1">
+    <button onclick="processCSV()">Process CSV</button>
+  </div>
   <div id="output"></div>
   <script>
     const orderMeans = [
@@ -24,19 +32,18 @@
       return lines.map(line => line.split(','));
     }
 
-    // Helper function to increase or decrease prices by 10% and round to the nearest multiple of 5
-    function adjustPrices(inorder, orderMeans, food_prices) {
+    // Updated Helper function to adjust prices proportionally based on percentage difference
+    function adjustPrices(inorder, orderMeans, food_prices, fixedAdjustment) {
       const new_prices = [];
 
       for (let i = 0; i < inorder.length; i++) {
         const diffPercentage = (inorder[i] - orderMeans[i]) / orderMeans[i] * 100;
+        const priceAdjustment = Math.round(diffPercentage / fixedAdjustment) * 5;
 
-        if (diffPercentage > 10) {
-          new_prices.push(Math.round((food_prices[i] + food_prices[i] * 0.1) / 5) * 5);
-        } else if (diffPercentage < -10) {
-          new_prices.push(Math.round((food_prices[i] - food_prices[i] * 0.1) / 5) * 5);
+        if (priceAdjustment >= 0) {
+          new_prices.push(food_prices[i] + priceAdjustment);
         } else {
-          new_prices.push(food_prices[i]);
+          new_prices.push(food_prices[i] - Math.abs(priceAdjustment));
         }
       }
 
@@ -47,6 +54,8 @@
     function processCSV() {
       const fileInput = document.getElementById('csvInput');
       const file = fileInput.files[0];
+      const percentageInput = document.getElementById('percentageInput');
+      const fixedAdjustment = parseFloat(percentageInput.value);
 
       if (!file) {
         alert("Please select a CSV file.");
@@ -70,7 +79,8 @@
         const new_prices = adjustPrices(
           inorderArray,
           orderMeans,
-          food_prices
+          food_prices,
+          fixedAdjustment
         );
 
         // Display the updated prices on the HTML page
