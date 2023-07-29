@@ -1,68 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Website Title</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="nav_boot.css">
   <title>Multiple Linear Regression</title>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-  <style>
-    #foodTable {
-      width: 50%;
-      margin-right: 25%;
-      margin-left: 7%;
-      margin-bottom: 5%;
-      border-style: solid;
-    }
-
-    #foodTable th,
-    #foodTable td {
-      border: 1px solid antiquewhite;
-      padding: 8px;
-      text-align: center;
-    }
-
-    #foodTable th {
-      background-color: rgba(0, 0, 0, 0.5);
-      color: antiquewhite;
-    }
-
-    #foodTable tr {
-      background-color: rgba(50, 50, 50, 0.356);
-    }
-
-    #foodTable tr:hover {
-      transition: 1s;
-      background-color: rgba(2, 76, 1, 0.751);
-    }
-
-    #csvFileInput {
-      display: none; /* Hide the default file input */
-    }
-
-    /* Styling for the custom "Choose File" button container */
-    .file-input-container {
-      display: flex;
-      justify-content: left;
-      align-items: center;
-      margin-left: 25%;
-      margin-top: 50px;
-      margin-bottom: 5%;
-      background-color: #fd7048;
-      padding: 10px 20px;
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-      max-width: fit-content;
-    }
-
-    .file-input-container:hover {
-      background-color: #f55830;
-    }
-  </style>
   <script>
     // Global variable to store the original data
     let originalData = [];
@@ -158,45 +98,46 @@
           models[foodId - 1] = model;
         }
 
+        // Function to handle predict button click
         function predictNextDayOrders() {
-    const dayOfWeek = Number(document.getElementById('day-of-week-input').value);
+          const dayOfWeek = Number(document.getElementById('day-of-week-input').value);
 
-    // Clear the previous table content before populating new predictions
-    const tableBody = document.querySelector('#foodTable tbody');
-    tableBody.innerHTML = '';
+          // Clear the previous table content before populating new predictions
+          const tableBody = document.querySelector('#foodTable tbody');
+          tableBody.innerHTML = '';
 
-    // Loop through all food IDs (1 to 20) and make predictions
-    for (let foodId = 1; foodId <= 20; foodId++) {
-      const filteredData = originalData.filter(item => item[0] === foodId);
+          // Loop through all food IDs (1 to 20) and make predictions
+          for (let foodId = 1; foodId <= 20; foodId++) {
+            const filteredData = originalData.filter(item => item[0] === foodId);
 
-      if (filteredData.length > 0) {
-        const foodIdNormalized = foodId / 5; // Normalize the input
-        const dayOfWeekNormalized = dayOfWeek / 7; // Normalize the input
+            if (filteredData.length > 0) {
+              const foodIdNormalized = foodId / 5; // Normalize the input
+              const dayOfWeekNormalized = dayOfWeek / 7; // Normalize the input
 
-        // Prepare the input tensor for prediction
-        const inputTensor = tf.tensor2d([[foodIdNormalized, dayOfWeekNormalized]]);
+              // Prepare the input tensor for prediction
+              const inputTensor = tf.tensor2d([[foodIdNormalized, dayOfWeekNormalized]]);
 
-        // Make the prediction using the respective model for the food ID
-        const normalizedPrediction = models[foodId - 1].predict(inputTensor).dataSync()[0];
+              // Make the prediction using the respective model for the food ID
+              const normalizedPrediction = models[foodId - 1].predict(inputTensor).dataSync()[0];
 
-        // Denormalize the prediction using the scaling factor for the number of orders
-        const prediction = normalizedPrediction * 140; // Scaling factor for the number of orders
+              // Denormalize the prediction using the scaling factor for the number of orders
+              const prediction = normalizedPrediction * 140; // Scaling factor for the number of orders
 
-        // Create a new row in the table for each prediction
-        const newRow = tableBody.insertRow();
+              // Create a new row in the table for each prediction
+              const newRow = tableBody.insertRow();
 
-        // Insert cells for Food ID and Prediction
-        const foodIdCell = newRow.insertCell();
-        const predictionCell = newRow.insertCell();
+              // Insert cells for Food ID and Prediction
+              const foodIdCell = newRow.insertCell();
+              const predictionCell = newRow.insertCell();
 
-        // Set the content of the cells
-        foodIdCell.textContent = foodId;
-        predictionCell.textContent = Math.round(prediction); // Display the prediction as an integer
-      } else {
-        alert('Food ID ' + foodId + ' not found in the data.');
-      }
-    }
-  }
+              // Set the content of the cells
+              foodIdCell.textContent = foodId;
+              predictionCell.textContent = prediction.toFixed(2);
+            } else {
+              alert('Food ID ' + foodId + ' not found in the data.');
+            }
+          }
+        }
 
         // Function to handle train button click
         function trainModels() {
@@ -216,16 +157,8 @@
     }
   </script>
 </head>
+
 <body>
-  <nav class="navbar navbar-expand-lg navbar" id="navbar">
-    <ul class="nav navbar-nav">
-      <li><img src="logo_new-removebg-preview.png" id="nav_logo"></li>
-      <li><a href="Home.html" class="hoverable">Home</a></li>
-      <li><a href="Upload.html" class="hoverable">Upload</a></li>
-      <li><a href="Upload.html" class="hoverable">Statistics</a></li>
-      <li class="nav_right"><a href="Login.html" class="hoverable">Log out</a></li>
-    </ul>
-  </nav>
   <h1>Multiple Linear Regression</h1>
   <input type="file" accept=".csv" onchange="handleFileSelect(event)" />
   <div>
@@ -247,36 +180,6 @@
       </tbody>
     </table>
   </div>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(function () {
-      var str = '#len';
-      $(document).ready(function () {
-        var i, stop;
-        i = 1;
-        stop = 4;
-        setInterval(function () {
-          if (i > stop) {
-            return;
-          }
-          $('#len' + (i++)).toggleClass('bounce');
-        }, 500);
-      });
-    });
-  </script>
-  <script>
-    window.addEventListener('scroll', function() {
-      const navbar = document.getElementById('navbar');
-  
-      // Check the current scroll position
-      if (window.scrollY > 0) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-  </script>
 </body>
 </html>
 
