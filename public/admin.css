@@ -8,26 +8,183 @@ html,body{
     color: antiquewhite;
     height: 100vh;
     transition: 1s;
+    scroll-behavior: smooth;
+    transition-duration: 2s;
+    background-size: cover;
 }
-  
-  /* Style the output table */
-  table {
-    border-collapse: collapse;
-    width: 50%;
-    margin: 20px;
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.848);
+  height: 3rem;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  border: none;
+  list-style-type: none;
+  padding: 0;
+  transition: 2s;
+}
+
+.navbar a {
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: antiquewhite;
+  display: inline-block;
+  margin: 0 10px;
+  padding: 1rem 0;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;
+  flex-grow: 1;
+}
+
+.navbar-nav {
+  display: flex; /* Display navbar items horizontally */
+  justify-content: flex-start; /* Align items to the left */
+  align-items: center;
+  flex-grow: 1; /* This will allow the list to take up the remaining space */
+}
+
+.navbar li {
+  font-size: 1.6rem;
+  display: inline-block;
+  margin: 2rem;
+  padding: 1rem 0;
+}
+
+#nav_logo {
+  max-width: 6rem;
+  padding-top: 7%;
+  padding-bottom: 0%;
+}
+
+.navbar.scrolled {
+  transition: 2.5s;
+  background-color: rgba(0, 0, 0, 0.897); /* Background color when scrolled */
+}
+
+/* Hoverable animation styles */
+.hoverable {
+  display: inline-block;
+  backface-visibility: hidden;
+  vertical-align: middle;
+  position: relative;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  transform: translateZ(0);
+  transition-duration: .3s;
+  transition-property: transform;
+}
+
+.hoverable:before {
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  content: '';
+  top: 100%;
+  left: 5%;
+  height: 10px;
+  width: 90%;
+  opacity: 0;
+  background: -webkit-radial-gradient(
+    center,
+    ellipse,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transition-duration: 0.3s;
+  transition-property: transform, opacity;
+}
+
+.hoverable:hover,
+.hoverable:active,
+.hoverable:focus {
+  transform: translateY(-5px);
+}
+
+.hoverable:hover:before,
+.hoverable:active:before,
+.hoverable:focus:before {
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+/* Bounce animation styles */
+@keyframes bounce-animation {
+  16.65% {
+    transform: translateY(8px);
   }
-  
-  table, th, td {
-    border: 1px solid #ddd;
-    background-color: rgba(50, 50, 50, 0.744);
-    padding: 10px;
-    text-align: center;
+
+  33.3% {
+    transform: translateY(-6px);
   }
-  
-  th {
-    background-color: rgba(0, 0, 0, 0.851);
-    font-weight: bold;
+
+  49.95% {
+    transform: translateY(4px);
   }
+
+  66.6% {
+    transform: translateY(-2px);
+  }
+
+  83.25% {
+    transform: translateY(1px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.bounce {
+  animation-name: bounce-animation;
+  animation-duration: 2s;
+}
+
+.tableContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5%; /* Reduce the bottom margin to create a better visual alignment */
+  padding: 0 10px; /* Add padding to the left and right of the container for better spacing */
+}
+
+#foodTable {
+  width: 50%;
+  /* Remove the margin properties as they are now handled by the tableContainer */
+  border-style: solid;
+}
+
+#foodTable th,
+#foodTable td {
+  border: 1px solid antiquewhite;
+  padding: 8px;
+  text-align: center;
+}
+
+#foodTable th {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: antiquewhite;
+}
+
+#foodTable tr {
+  background-color: rgba(50, 50, 50, 0.356);
+}
+
+#foodTable tr:hover {
+  transition: 1s;
+  background-color: rgba(2, 76, 1, 0.751);
+}
+
   
   /* Style the Process CSV button */
   button {
@@ -46,8 +203,7 @@ html,body{
   
   /* Style the input fields */
   input[type="file"], input[type="number"] {
-    margin-right: 10px;
-    padding: 5px;
+    margin: 10px;
     font-size: 16px;
   }
   
@@ -55,16 +211,9 @@ html,body{
     display: none;
   }
   
-  label {
-    cursor: pointer;
-    background-color: #fd7048;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5%;
+  .input_var{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 50px;
   }
-  
-  label:hover {
-    background-color: #f55830;
-  }
-  

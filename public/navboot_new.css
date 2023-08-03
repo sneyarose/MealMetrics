@@ -1,0 +1,156 @@
+/* Common styles */
+:root {
+    font-size: 16px;
+    transition: 1s;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    color: antiquewhite;
+    scroll-behavior: smooth;
+    transition-duration: 2s;
+    background-size: cover;
+  }
+  
+  /* Navbar styles */
+  .navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0);
+    height: 3rem;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    border: none;
+    list-style-type: none;
+    padding: 0;
+    transition: 2s;
+  }
+  
+  .navbar a {
+    font-size: 1.6rem;
+    text-decoration: none;
+    color: antiquewhite;
+    display: inline-block;
+    margin: 0 10px;
+    padding: 1rem 0;
+  }
+
+  .navbar ul {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    flex-grow: 1;
+  }
+  
+  .navbar-nav {
+    display: flex; /* Display navbar items horizontally */
+    justify-content: flex-start; /* Align items to the left */
+    align-items: center;
+    flex-grow: 1; /* This will allow the list to take up the remaining space */
+  }
+  
+  .navbar li {
+    font-size: 1.6rem;
+    display: inline-block;
+    margin: 2rem;
+    padding: 1rem 0;
+  }
+  
+  #nav_logo {
+    max-width: 6rem;
+    padding-top: 7%;
+    padding-bottom: 0%;
+  }
+  
+  .navbar.scrolled {
+    transition: 2.5s;
+    background-color: rgba(0, 0, 0, 0.897); /* Background color when scrolled */
+  }
+
+  /* Hoverable animation styles */
+  .hoverable {
+    display: inline-block;
+    backface-visibility: hidden;
+    vertical-align: middle;
+    position: relative;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    transform: translateZ(0);
+    transition-duration: .3s;
+    transition-property: transform;
+  }
+  
+  .hoverable:before {
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+    content: '';
+    top: 100%;
+    left: 5%;
+    height: 10px;
+    width: 90%;
+    opacity: 0;
+    background: -webkit-radial-gradient(
+      center,
+      ellipse,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0) 80%
+    );
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0) 80%
+    );
+    transition-duration: 0.3s;
+    transition-property: transform, opacity;
+  }
+  
+  .hoverable:hover,
+  .hoverable:active,
+  .hoverable:focus {
+    transform: translateY(-5px);
+  }
+  
+  .hoverable:hover:before,
+  .hoverable:active:before,
+  .hoverable:focus:before {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+  
+  /* Bounce animation styles */
+  @keyframes bounce-animation {
+    16.65% {
+      transform: translateY(8px);
+    }
+  
+    33.3% {
+      transform: translateY(-6px);
+    }
+  
+    49.95% {
+      transform: translateY(4px);
+    }
+  
+    66.6% {
+      transform: translateY(-2px);
+    }
+  
+    83.25% {
+      transform: translateY(1px);
+    }
+  
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .bounce {
+    animation-name: bounce-animation;
+    animation-duration: 2s;
+  }
+  
+

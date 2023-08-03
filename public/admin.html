@@ -6,28 +6,65 @@
   <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar" id="navbar">
+    <ul class="nav navbar-nav">
+      <li><img src="logo_new-removebg-preview.png" id="nav_logo"></li>
+      <li class="nav_right"><a href="index.html" class="hoverable">Log out</a></li>
+    </ul>
+  </nav>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function () {
+      var str = '#len';
+      $(document).ready(function () {
+        var i, stop;
+        i = 1;
+        stop = 4;
+        setInterval(function () {
+          if (i > stop) {
+            return;
+          }
+          $('#len' + (i++)).toggleClass('bounce');
+        }, 500);
+      });
+    });
+  </script>
+  <script>
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+  
+      // Check the current scroll position
+      if (window.scrollY > 0) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
   <div class="input_var">
-    <label for="percentageInput">Percentage Threshold:</label>
-    <input type="number" id="percentageInput" value="10" step="1" min="1">
-    <button onclick="processCSV()">Process CSV</button>
+    <input type="number" id="percentageInput" value="100" step="1" min="1">
+    <button onclick="processCSV()">Process Prices</button>
+    <br><br>
   </div>
 
   <div id="output"></div>
 
 
-  <div id="tableContainer"></div>
+  <div id="tableContainer" class="text-center"> <!-- Apply the "text-center" class to center-align the container -->
     <table id="foodTable">
-        <thead>
-          <tr>
-            <th>Food Id</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody id="foodTableBody">
-          <!-- Table rows will be dynamically added using JavaScript -->
-        </tbody>
-      </table>
-
+      <thead>
+        <tr>
+          <th>Food Id</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody id="foodTableBody">
+        <!-- Table rows will be dynamically added using JavaScript -->
+      </tbody>
+    </table>
+  </div>
 
   <script>
     let processedData=[];

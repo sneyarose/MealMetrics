@@ -8,6 +8,35 @@
   <title>Multiple Linear Regression</title>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
   <style>
+
+.container {
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-right: 50%;
+}
+
+/* ... your existing button styles ... */
+
+/* Style for the input field */
+input[type="date"] {
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  margin-top: 10px; /* Add some top margin to separate the input from the buttons */
+}
+
+.buttons{
+  display: flex;
+  align-items: center;
+}
+
+.buttons button{
+  margin: 5%;
+}
+
     #foodTable {
       width: 50%;
       margin-right: 25%;
@@ -61,6 +90,51 @@
 
     .file-input-container:hover {
       background-color: #f55830;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 5px;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+
+    /* Style for the "Load Data" button */
+    #load_data {
+      background-color: #fd7048;
+      color: white;
+      margin-top: 20px;
+    }
+
+    /* Style for the "Predict" button */
+    #predict-button {
+      background-color: #fd7048;
+      color: white;
+      margin: 10px 10px 0 0;
+    }
+
+    /* Style for the "Train Models" button */
+    #train-button {
+      background-color: #fd7048;
+      color: white;
+      margin: 10px 10px 0 10px;
+    }
+
+    /* Style for the input field */
+    input[type="date"] {
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
+
+    /* Hover effect for buttons */
+    button:hover {
+      background-color: #fd7048;
+      color: white;
     }
   </style>
   <script>
@@ -267,14 +341,18 @@
       <li class="nav_right"><a href="index.html" class="hoverable">Log out</a></li>
     </ul>
   </nav>
+  <div class="container">
   <h1>Multiple Linear Regression</h1>
   <button id="load_data" onclick="handleFileSelect()">Load Data</button>
+  <div class="buttons">
   <div>
-    <label for="day-of-week-input">Day of the Week:</label>
     <input type="date" id="day-of-week-input">
   </div>
+  <button id="train-button">Train Models</button>
   <button id="predict-button">Predict</button>
-  <button id="train-button">Train Models</button><br><br><br><br>
+  </div>
+  <br><br>
+  </div>
   <div id="output-container">
     <table id="foodTable">
       <thead>

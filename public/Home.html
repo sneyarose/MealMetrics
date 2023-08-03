@@ -74,41 +74,41 @@
       </table>
     
       <script>
-    // Function to fetch data from the server and populate the table
-    async function fetchDataAndPopulateTable() {
-      try {
-        // Fetch data from the server
-        const response = await fetch('/api/foodData');
-        const data = await response.json();
+          // Function to fetch data from the server and populate the table
+          async function fetchDataAndPopulateTable() {
+                try {
+                  // Fetch data from the server
+                  const response = await fetch('/api/foodPrice');
+                  const data = await response.json();
 
-        // Get a reference to the table body
-        var tableBody = document.getElementById('foodTableBody');
+                  // Get a reference to the table body
+                  var tableBody = document.getElementById('foodTableBody');
 
-        // Function to generate the table rows
-        function generateTableRows() {
-          var rows = '';
-          for (var i = 0; i < data.length; i++) {
-            var row = `
-              <tr>
-                <td>${data[i].id}</td>
-                <td>${data[i].name}</td>
-                <td>${data[i].price}</td>
-              </tr>
-            `;
-            rows += row;
-          }
-          return rows;
-        }
+                  // Function to generate the table rows
+                  function generateTableRows() {
+                    var rows = '';
+                    for (var i = 0; i < data.length; i++) {
+                      var row = `
+                        <tr>
+                          <td>${data[i].id}</td>
+                          <td>${data[i].Name}</td>
+                          <td>${data[i].Price}</td>
+                        </tr>
+                      `;
+                      rows += row;
+                    }
+                    return rows;
+                  }
 
-        // Populate the table body with the data
-        tableBody.innerHTML = generateTableRows();
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
+                  // Populate the table body with the data
+                  tableBody.innerHTML = generateTableRows();
+                } catch (error) {
+                  console.error('Error fetching data:', error);
+                }
+              }
 
-    // Call the function to fetch data and populate the table
-    fetchDataAndPopulateTable();
+              // Call the function to fetch data and populate the table
+              fetchDataAndPopulateTable();
       </script>
 
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
