@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Website Title</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="nav_boot.css" />
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style>
+      .curve_chart {
+        background-color: #0f0f0f00;
+      }
+      #stats {
+        background-color: #fd7048;
+      }
+      .chart text {
+    fill: white; /* Set the text color to white */
+  }
+      .chart-container {
+        display: grid;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .google-visualization-axis-text {
+    fill: white; /* Set the text color to white */
+  }
+      .chart {
+        display: flex;
+        width: 700px;
+        height: 500px;
+        margin: 10px;
+        background-color: rgba(107, 255, 73, 0.062);
+      }
+      #food_enter {
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar" id="navbar">
+      <ul class="nav navbar-nav">
+        <li><img src="logo_new-removebg-preview.png" id="nav_logo" /></li>
+        <li><a href="Home.html" class="hoverable">Home</a></li>
+        <li><a href="Upload.html" class="hoverable">Upload</a></li>
+        <li><a href="Stats.html" class="hoverable">Statistics</a></li>
+        <li><a href="mlc.html" class="hoverable">ML Model</a></li>
+        <li class="nav_right">
+          <a href="index.html" class="hoverable">Log out</a>
+        </li>
+      </ul>
+    </nav>
+
+
+    <script type="text/javascript">
+        
+
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+
+    // Function to draw the chart using the fetched data
+    function drawChart(data,foodName) {
+        
+      var chartData = google.visualization.arrayToDataTable(data);
+
+      var options = {
+        title: "Number of Orders of "+foodName,
+        curveType: 'function',
+        legend: { position: 'bottom' },
+        backgroundColor: { fill: 'transparent' },
+        titleTextStyle: {
+          color: 'white',
+        },
+        colors: ['orange'],
+        hAxis: {
+          textStyle: {
+            color: 'white', // Set the horizontal axis label text color to white
+          },
+        },
+        vAxis: {
+          textStyle: {
+            color: 'white', // Set the vertical axis label text color to white
+          },
+          titleTextStyle: {
+            color: 'white', // Set the vertical axis title text color to white
+          },
+        },
+        is3D: true,
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+      chart.draw(chartData, options);
+    }
+
+    // Function to fetch data from the server based on the food ID
+    function fetchData(foodId) {
+  fetch(`/api/foodDataLastWeek?foodId=${foodId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Fetched data:', data);
+      const foodName = data.foodName;
+      console.log(foodName);
+      drawChart(data.chartData, foodName);
+    })
+    .catch((error) => {
+      console.error('Error fetching data from the server:', error);
+    });
+}
+
+
+    // Event listener for the Enter button
+    
+
+    // Load Google Charts
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(function () {
+      // Call the fetchData function on page load with foodId = 7 (or any other default foodId)
+      fetchData(0);
+    });
+    
+        function pressed(){
+            const foodId=document.getElementById('idn').value;
+            console.log(foodId);
+            fetchData(foodId);
+        }
+
+    </script>
+      <br><br>
+    
+      <table id="food_enter">
+        <tr>
+          <td>Enter Food ID :</td>
+          <td><form><input type="number" id="idn"/></td></form>
+          <td><button onclick="pressed()">Enter</button> </td>
+        </tr>
+      </table>
+    <br />
+    <div class="chart-container">
+      <div class="chart" id="curve_chart"></div>
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+      $(function () {
+        var str = "#len";
+        $(document).ready(function () {
+          var i, stop;
+          i = 1;
+          stop = 4;
+          setInterval(function () {
+            if (i > stop) {
+              return;
+            }
+            $("#len" + i++).toggleClass("bounce");
+          }, 500);
+        });
+      });
+    </script>
+    <script>
+      window.addEventListener("scroll", function () {
+        const navbar = document.getElementById("navbar");
+
+        if (window.scrollY > 0) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+    </script>
+  </body>
+</html>

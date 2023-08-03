@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Processor</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="input_var">
+    <label for="percentageInput">Percentage Threshold:</label>
+    <input type="number" id="percentageInput" value="10" step="1" min="1">
+    <button onclick="processCSV()">Process CSV</button>
+  </div>
+
+  <div id="output"></div>
+
+
+  <div id="tableContainer"></div>
+    <table id="foodTable">
+        <thead>
+          <tr>
+            <th>Food Id</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="foodTableBody">
+          <!-- Table rows will be dynamically added using JavaScript -->
+        </tbody>
+      </table>
+
+
+  <script>
+    let processedData=[];
+    const orderMeans = [
+      91.57, 64.0, 196.0, 212.43, 320.71, 95.71, 87.0, 46.71, 54.0, 75.0,
+      45.43, 57.71, 48.71, 88.71, 89.14, 105.86, 321.71, 43.57, 83.0, 71.43
+    ];
+
+    const food_prices = [
+      150, 120, 30, 70, 40, 20, 140, 180, 250, 70,
+      160, 130, 80, 160, 200, 110, 50, 140, 200, 140
+    ];
+
+    
+    async function fetchDataFromMongoDB() {
+      try {
+        const response = await fetch('/api/get-data-from-mongodb_admin'); // Replace '/api/get-data-from-mongodb' with your actual API endpoint
+        const data = await response.json();
+
+        // Preprocess the data fetched from MongoDB
+        processedData = preprocessData(data);
+        return(processedData);
+      } catch (error) {
+        console.error('Error fetching data from MongoDB:', error);
+      }
+    }
+    function preprocessData(data) {
+      const processedData = data.map((item) => {
+        const foodId = parseInt(item.foodId);
+        const orders = parseInt(item.prediction);
+        const date = new Date(item.dayOfWeek);
+        return [foodId, orders, date];
+      });
+          // Log the processed data
+          console.log('Processed Data:', processedData);
+      return processedData;
+    }
+
+    function processData(data) {
+      const processedData = data.map((item) => {
+        const foodId = parseInt(item.id);
+        const name = String(item.name);
+        const price = String(item.price);
+        const order = String(item.order);
+        const date = new Date(item.date);
+        return [foodId,name];
+      });
+      return processedData;
+    }
+    
+
+
+    function parseCSVData(csvData) {
+      const lines = csvData.split('\n');
+      return lines.map(line => line.split(','));
+    }
+
+    // Updated Helper function to adjust prices proportionally based on percentage difference
+    function adjustPrices(inorder, orderMeans, food_prices, fixedAdjustment) {
+      const new_prices = [];
+
+      for (let i = 0; i < inorder.length; i++) {
+        const diffPercentage = (inorder[i] - orderMeans[i]) / orderMeans[i] * 100;
+        const priceAdjustment = Math.round(diffPercentage / fixedAdjustment) * 5;
+
+        if (priceAdjustment >= 0) {
+          new_prices.push(food_prices[i] + priceAdjustment);
+        } else {
+          new_prices.push(food_prices[i] - Math.abs(priceAdjustment));
+        }
+      }
+
+      return new_prices;
+    }
+    
+    async function fetchFoodName(){
+      try {
+        const response = await fetch(`/api/foodData`);
+        const data = await response.json();
+
+        // Preprocess the data fetched from MongoDB
+        processedData = processData(data);
+        return(processedData);
+      } catch (error) {
+        console.error('Error fetching data from MongoDB:', error);
+      }
+    }
+
+
+    async function update_table(combinedArray){
+      fetch('/api/store-Optimal', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ combinedArray }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            // Handle the response if needed
+          })
+          .catch((error) => {
+            console.error('Error storing predictions:', error);
+            // Handle the error if needed
+          });
+    }
+
+    // Main processing function
+    async function processCSV() {
+      
+      processedData=await fetchDataFromMongoDB();
+      const percentageInput = document.getElementById('percentageInput');
+      const fixedAdjustment = parseFloat(percentageInput.value);
+
+      var Price = processedData.map(function(value,index) { return value[1]; });// Extract the second column as an array
+      
+      const new_prices = adjustPrices(
+          Price,
+          orderMeans,
+          food_prices,
+          fixedAdjustment
+        );
+      console.log(new_prices);
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = "<h3>Updated Prices:</h3>";
+
+      new_array=await fetchFoodName();
+      var id = processedData.map(function(value,index) { return value[0]; });
+      var Name = processedData.map(function(value,index) { return value[1]; });
+      const combinedArray = id.map((id, index) => ({
+      id:id,
+      Name: Name[index],
+      Price: new_prices[index]
+    }));
+
+      console.log(combinedArray);
+      
+      await update_table(combinedArray);
+
+      async function fetchDataAndPopulateTable() {
+      try {
+        // Fetch data from the server
+        
+
+        // Get a reference to the table body
+        var tableBody = document.getElementById('foodTableBody');
+
+        // Function to generate the table rows
+        function generateTableRows() {
+          var rows = '';
+          for (let i = 0; i < new_prices.length; i++) {
+              const entryNumber = i + 1;
+              const updatedPrice = new_prices[i];
+            var row = `
+              <tr>
+                <td>${entryNumber}</td>
+                <td>${updatedPrice.toFixed(2)}</td>
+              
+              </tr>
+            `;
+            rows += row;
+          }
+          return rows;
+        }
+
+        // Populate the table body with the data
+        tableBody.innerHTML = generateTableRows();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    // Call the function to fetch data and populate the table
+    fetchDataAndPopulateTable();
+
+
+
+        //outputDiv.innerHTML += `<p>Entry ${entryNumber}: $${updatedPrice.toFixed(2)}</p>`;
+      
+    }
+    
+  </script>
+</body>
+</html>

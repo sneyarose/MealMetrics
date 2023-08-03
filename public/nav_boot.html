@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Website Title</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="nav_boot.css">
+  
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar" id="navbar">
+    <ul class="nav navbar-nav">
+      <li><img src="logo_new-removebg-preview.png" id="nav_logo"></li>
+      <li><a href="Home.html" class="hoverable">Home</a></li>
+      <li><a href="Upload.html" class="hoverable">Upload</a></li>
+      <li><a href="Upload.html" class="hoverable">Statistics</a></li>
+      <li class="nav_right"><a href="index.html" class="hoverable">Log out</a></li>
+    </ul>
+  </nav>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(function () {
+      var str = '#len';
+      $(document).ready(function () {
+        var i, stop;
+        i = 1;
+        stop = 4;
+        setInterval(function () {
+          if (i > stop) {
+            return;
+          }
+          $('#len' + (i++)).toggleClass('bounce');
+        }, 500);
+      });
+    });
+  </script>
+  <script>
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+  
+      // Check the current scroll position
+      if (window.scrollY > 0) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

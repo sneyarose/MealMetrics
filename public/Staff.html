@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Staff</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      background-image:url(stff_bg.jpg);
+      background-size: cover;
+      font-family: sans-serif;
+      background-blend-mode: multiply;
+    }
+
+    #foodTable {
+        width: 87%;
+        margin-right: 5%;
+        margin-left: 5%;
+        margin-bottom: 5%;
+        border-style: solid;
+      }
+
+      #foodTable th,
+      #foodTable td {
+        border: 1px solid antiquewhite;
+        padding: 8px;
+        text-align: center;
+      }
+
+      #foodTable th {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: antiquewhite;
+      }
+
+      #foodTable tr {
+        background-color: rgba(50, 50, 50, 0.356);
+        color: antiquewhite;
+      }
+
+      #foodTable tr:hover {
+        transition: 1s;
+        background-color: rgba(2, 76, 1, 0.751);
+      }
+
+    #home {
+      background-color: #fd7048;
+    }
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center" style="color:#fd7048;">Current Prices</h1>
+    <div id="tableContainer" class="table-responsive">
+      <table id="foodTable" class="table">
+        <thead>
+          <tr>
+            <th>Sno</th>
+            <th>Name of Food</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="foodTableBody">
+          <!-- Table rows will be dynamically added using JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+ // Function to fetch data from the server and populate the table
+ async function fetchDataAndPopulateTable() {
+      try {
+        // Fetch data from the server
+        const response = await fetch('/api/foodPrice');
+        const data = await response.json();
+
+        // Get a reference to the table body
+        var tableBody = document.getElementById('foodTableBody');
+
+        // Function to generate the table rows
+        function generateTableRows() {
+          var rows = '';
+          for (var i = 0; i < data.length; i++) {
+            var row = `
+              <tr>
+                <td>${data[i].id}</td>
+                <td>${data[i].Name}</td>
+                <td>${data[i].Price}</td>
+              </tr>
+            `;
+            rows += row;
+          }
+          return rows;
+        }
+
+        // Populate the table body with the data
+        tableBody.innerHTML = generateTableRows();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    // Call the function to fetch data and populate the table
+    fetchDataAndPopulateTable();
+  </script>
+</body>
+
+</html>
