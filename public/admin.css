@@ -151,15 +151,16 @@ html,body{
   animation-duration: 2s;
 }
 
-.tableContainer {
+#tableContainer {
   display: flex;
   justify-content: center;
   margin-bottom: 5%; /* Reduce the bottom margin to create a better visual alignment */
-  padding: 0 10px; /* Add padding to the left and right of the container for better spacing */
+  padding-top: 10px; /* Add padding to the left and right of the container for better spacing */
 }
 
 #foodTable {
   width: 50%;
+  
   /* Remove the margin properties as they are now handled by the tableContainer */
   border-style: solid;
 }
